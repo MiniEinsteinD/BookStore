@@ -1,3 +1,6 @@
+/*
+example to help create our ddl
+*/
 create table IF NOT EXISTS User   
     (   
         Fname  varchar(15)	NOT NULL,
