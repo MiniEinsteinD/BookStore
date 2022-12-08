@@ -56,10 +56,10 @@ create table IF NOT EXISTS Bank
     account_number     INT      UNIQUE  NOT NULL,
     password    varchar(15)     NOT NULL,
     balance     float       NOT NULL,
-    primary key (account_number),
+    primary key (account_number)
     );
 
-create table IF NOT EXISTS Order
+create table IF NOT EXISTS Orders
     (
     username    varchar(15)     UNIQUE  NOT NULL,
     postal_code     varchar(6)      UNIQUE  NOT NULL,
@@ -68,9 +68,8 @@ create table IF NOT EXISTS Order
     order_date      DATE    NOT NULL,
     total_price   float     NOT NULL,
     primary key (username),
-    primary key (postal_code),
     foreign key (username) references User (username),
-    foreign key (post_code) references Address (postal_code) 
+    foreign key (postal_code) references Address (postal_code) 
     );
 
 create table IF NOT EXISTS Collecion
@@ -79,7 +78,6 @@ create table IF NOT EXISTS Collecion
     ISBN   INT      UNIQUE  NOT NULL,
     quantity    INT     NOT NULL,
     primary key (owner),
-    primary key (ISBN),
     foreign key (owner) references Owner (username),
     foreign key (ISBN) references Book (ISBN) 
     );
@@ -114,7 +112,6 @@ create table IF NOT EXISTS Lives_At
     resident    varchar(15)    UNIQUE  NOT NULL,
     post_code  varchar(6)     UNIQUE  NOT NULL,
     primary key (resident),
-    primary key (post_code),
     foreign key (resident) references User (email_address),
     foreign key (post_code) references Address (postal_code) 
     );
@@ -124,16 +121,14 @@ create table IF NOT EXISTS Works_At
     publisher    varchar(15)    UNIQUE  NOT NULL,
     post_code  varchar(6)     UNIQUE  NOT NULL,
     primary key (publisher),
-    primary key (post_code),
     foreign key (publisher) references Publisher (email_address),
     foreign key (post_code) references Address (postal_code) 
     );
 
 create table IF NOT EXISTS User_Banking
     (
-    user    varchar(15)    UNIQUE  NOT NULL,
-    account_number  INT     UNIQUE  NOT NULL,
-    primary key(user),
+    account_holder  varchar(15)   UNIQUE  NOT NULL,
+    account_number  INT UNIQUE  NOT NULL,
     primary key (account_number),
-    foreign key (user) references User (username),
+    foreign key (account_holder) references User (username)
     );
