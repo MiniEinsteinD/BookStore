@@ -13,7 +13,7 @@ create table IF NOT EXISTS Owner
     first_name  varchar(15)     NOT NULL,
     last_name  varchar(15)     NOT NULL,
     password    varchar(15)     NOT NULL,
-    balance     float       NOT NULL,
+    balance     DECIMAL       NOT NULL,
     primary key (username)
     );
 
@@ -23,17 +23,17 @@ create table IF NOT EXISTS Publisher
     first_name  varchar(15)     NOT NULL,
     last_name  varchar(15)     NOT NULL,
     password    varchar(15)     NOT NULL,
-    balance     float       NOT NULL,
+    balance     DECIMAL       NOT NULL,
     primary key (email_address)
     );
 
 create table IF NOT EXISTS Book
     (
-    ISBN   INT      UNIQUE  NOT NULL, 
+    ISBN   varchar(13)      UNIQUE  NOT NULL, 
     name    varchar(50)     NOT NULL,
     page_num    INT     NOT NULL,
-    price   float     NOT NULL, /*float might not work*/ 
-    publisher_percentage    float    NOT NULL,
+    price   DECIMAL     NOT NULL, /*float might not work*/ 
+    publisher_percentage    DECIMAL    NOT NULL,
     publisher       varchar(15)     UNIQUE  NOT NULL,
     primary key (ISBN),
     foreign key (publisher) references Publisher (email_address)
@@ -55,7 +55,7 @@ create table IF NOT EXISTS Bank
     (
     account_number     INT      UNIQUE  NOT NULL,
     password    varchar(15)     NOT NULL,
-    balance     float       NOT NULL,
+    balance     DECIMAL       NOT NULL,
     primary key (account_number)
     );
 
@@ -63,10 +63,10 @@ create table IF NOT EXISTS Orders
     (
     username    varchar(15)     UNIQUE  NOT NULL,
     postal_code     varchar(6)      UNIQUE  NOT NULL,
-    order_num    INT     NOT NULL, /*not sure*/
+    order_num    varchar(15)     NOT NULL, /*not sure*/
     traking_info    varchar(50)     NOT NULL,
     order_date      DATE    NOT NULL,
-    total_price   float     NOT NULL,
+    total_price   DECIMAL     NOT NULL,
     primary key (username),
     foreign key (username) references Users (username),
     foreign key (postal_code) references Address (postal_code) 
@@ -75,7 +75,7 @@ create table IF NOT EXISTS Orders
 create table IF NOT EXISTS Collecion
     (
     owner   varchar(15)     UNIQUE  NOT NULL,
-    ISBN   INT      UNIQUE  NOT NULL,
+    ISBN   varchar(13)       UNIQUE  NOT NULL,
     quantity    INT     NOT NULL,
     primary key (owner),
     foreign key (owner) references Owner (username),
@@ -92,7 +92,7 @@ create table IF NOT EXISTS Phone
 
 create table IF NOT EXISTS Is_Author
     (
-    ISBN   INT      UNIQUE  NOT NULL,
+    ISBN   varchar(13)      UNIQUE  NOT NULL,
     first_name  varchar(15)     NOT NULL,
     last_name  varchar(15)     NOT NULL,
     primary key (ISBN),
@@ -101,7 +101,7 @@ create table IF NOT EXISTS Is_Author
 
 create table IF NOT EXISTS Is_Genre
     (
-    ISBN   INT      UNIQUE  NOT NULL,
+    ISBN   varchar(13)      UNIQUE  NOT NULL,
     genre    varchar(15)     NOT NULL,
     primary key (ISBN),
     foreign key (ISBN) references Book (ISBN) 
@@ -129,6 +129,6 @@ create table IF NOT EXISTS User_Banking
     (
     account_holder  varchar(15)   UNIQUE  NOT NULL,
     account_number  INT UNIQUE  NOT NULL,
-    primary key (account_number),
+    primary key (account_number, account_holder),
     foreign key (account_holder) references Users (username)
     );
