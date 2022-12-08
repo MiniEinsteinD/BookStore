@@ -1,4 +1,4 @@
-create table IF NOT EXISTS User
+create table IF NOT EXISTS Users
     (
     username    varchar(15)     UNIQUE  NOT NULL,/* Add to decision/discuss 15 length*/
     first_name  varchar(15)     NOT NULL,
@@ -68,7 +68,7 @@ create table IF NOT EXISTS Orders
     order_date      DATE    NOT NULL,
     total_price   float     NOT NULL,
     primary key (username),
-    foreign key (username) references User (username),
+    foreign key (username) references Users (username),
     foreign key (postal_code) references Address (postal_code) 
     );
 
@@ -112,7 +112,7 @@ create table IF NOT EXISTS Lives_At
     resident    varchar(15)    UNIQUE  NOT NULL,
     post_code  varchar(6)     UNIQUE  NOT NULL,
     primary key (resident),
-    foreign key (resident) references User (email_address),
+    foreign key (resident) references Users (username),
     foreign key (post_code) references Address (postal_code) 
     );
 
@@ -130,5 +130,5 @@ create table IF NOT EXISTS User_Banking
     account_holder  varchar(15)   UNIQUE  NOT NULL,
     account_number  INT UNIQUE  NOT NULL,
     primary key (account_number),
-    foreign key (account_holder) references User (username)
+    foreign key (account_holder) references Users (username)
     );
