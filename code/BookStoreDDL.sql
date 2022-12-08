@@ -1,9 +1,9 @@
 create table IF NOT EXISTS Users
     (
-    username    varchar(15)     UNIQUE  NOT NULL,/* Add to decision/discuss 15 length*/
+    username    varchar(15)     UNIQUE  NOT NULL,
     first_name  varchar(15)     NOT NULL,
     last_name  varchar(15)     NOT NULL,
-    password    varchar(15)     NOT NULL, /* change it to char with limited chars maybe!!*/
+    password    varchar(15)     NOT NULL, 
     primary key (username)
     );
 
@@ -32,14 +32,14 @@ create table IF NOT EXISTS Book
     ISBN   varchar(13)      UNIQUE  NOT NULL, 
     name    varchar(50)     NOT NULL,
     page_num    INT     NOT NULL,
-    price   DECIMAL     NOT NULL, /*float might not work*/ 
+    price   DECIMAL     NOT NULL,
     publisher_percentage    DECIMAL    NOT NULL,
     publisher       varchar(15)     UNIQUE  NOT NULL,
     primary key (ISBN),
     foreign key (publisher) references Publisher (email_address)
     );
 
-/*Disscus not null*/
+
 create table IF NOT EXISTS Address
     (
     postal_code     varchar(6)      UNIQUE  NOT NULL,
@@ -63,7 +63,7 @@ create table IF NOT EXISTS Orders
     (
     username    varchar(15)     UNIQUE  NOT NULL,
     postal_code     varchar(6)      UNIQUE  NOT NULL,
-    order_num    varchar(15)     NOT NULL, /*not sure*/
+    order_num    varchar(15)     NOT NULL, 
     traking_info    varchar(50)     NOT NULL,
     order_date      DATE    NOT NULL,
     total_price   DECIMAL     NOT NULL,
@@ -77,14 +77,14 @@ create table IF NOT EXISTS Collecion
     owner   varchar(15)     UNIQUE  NOT NULL,
     ISBN   varchar(13)       UNIQUE  NOT NULL,
     quantity    INT     NOT NULL,
-    primary key (owner),
+    primary key (owner, ISBN),
     foreign key (owner) references Owner (username),
     foreign key (ISBN) references Book (ISBN) 
     );
 
 create table IF NOT EXISTS Phone
     (
-    publisher    varchar(15)    UNIQUE  NOT NULL,
+    publisher    varchar(15)  NOT NULL,
     phone  varchar(10)      NOT NULL,
     primary key (publisher),
     foreign key (publisher) references Publisher (email_address)
@@ -111,7 +111,7 @@ create table IF NOT EXISTS Lives_At
     (
     resident    varchar(15)    UNIQUE  NOT NULL,
     post_code  varchar(6)     UNIQUE  NOT NULL,
-    primary key (resident),
+    primary key (resident, post_code),
     foreign key (resident) references Users (username),
     foreign key (post_code) references Address (postal_code) 
     );
@@ -120,7 +120,7 @@ create table IF NOT EXISTS Works_At
     (
     publisher    varchar(15)    UNIQUE  NOT NULL,
     post_code  varchar(6)     UNIQUE  NOT NULL,
-    primary key (publisher),
+    primary key (publisher, post_code),
     foreign key (publisher) references Publisher (email_address),
     foreign key (post_code) references Address (postal_code) 
     );

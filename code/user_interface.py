@@ -22,8 +22,8 @@ try:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             # Demo  
             #insert_script  = "INSERT INTO Publisher (email_address, first_name, last_name, password, balance) VALUES ('test.com', 'test', 'd1', 'shesh', 500)"
-            #insert_script  = "INSERT INTO Book (ISBN, name, page_num, price, publisher_percentage, publisher) VALUES ('1234567890123', 'test', 10, 12.5, 0.1, 'test.com') "
-            # insert_values = [("1234567890123", "test", 10, 12.5, 0.1, "test.com")]
+            insert_script  = "INSERT INTO Book (ISBN, name, page_num, price, publisher_percentage, publisher) VALUES (%s, %s, %d, %d, %d, %s) "
+            insert_values = [('1234567890ss123', 'test', 10, 12.5, 0.1, 'test.com')]
             # for record in insert_values:
             #     cur.execute(insert_script, record)
             #cur.execute(insert_script)
@@ -32,9 +32,9 @@ try:
 
             cur.execute('SELECT * FROM Book')
             for record in cur.fetchall():
-                print(record['name'])
+                print(record['ISBN'])
 except Exception as error:
     print(error)
 finally:
     if conn is not None:
-        conn.close()
+        conn.close() 
