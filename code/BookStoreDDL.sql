@@ -129,6 +129,6 @@ create table IF NOT EXISTS User_Banking
     (
     account_holder  varchar(15)   UNIQUE  NOT NULL,
     account_number  INT UNIQUE  NOT NULL,
-    primary key (account_number),
+    primary key (account_number, account_holder),
     foreign key (account_holder) references Users (username)
     );
