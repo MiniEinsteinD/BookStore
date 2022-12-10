@@ -34,7 +34,7 @@ create table IF NOT EXISTS Book
     page_num    INT     NOT NULL,
     price   DECIMAL     NOT NULL,
     publisher_percentage    DECIMAL    NOT NULL,
-    publisher       varchar(15)     UNIQUE  NOT NULL,
+    publisher       varchar(15)     NOT NULL,
     primary key (ISBN),
     foreign key (publisher) references Publisher (email_address)
     );
@@ -53,7 +53,7 @@ create table IF NOT EXISTS Address
 
 create table IF NOT EXISTS Bank
     (
-    account_number     INT      UNIQUE  NOT NULL,
+    account_number     varchar(15)      UNIQUE  NOT NULL,
     password    varchar(15)     NOT NULL,
     balance     DECIMAL       NOT NULL,
     primary key (account_number)

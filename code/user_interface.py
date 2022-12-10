@@ -1,40 +1,56 @@
 # Author: Daniah Mohammed
 import psycopg2
-import psycopg2.extras
+import psycopg2.extras      #To access the attributes as "column name not  list index number"
+import pgsql_credentials
 
-#Create connection with db  -- might hide in a diff file
-hostname = 'localhost'
-database = 'BookStore'
-username = 'postgres'
-pwd = 'Dano!123'
-port_id = 5432
+# This function creates an insert sql statment
+def insert_script(table_name, values):
+    script = "INSERT INTO " + table_name + " VALUES ("
+
+    count = 0
+    for value in values:
+        if count == len(values)-1:
+            script += "'" + value + "'" + ");" 
+            break
+        script += "'" +  value + "'" + ", "
+        count+=1
+
+    return script
+ 
+#Create connection with db
 conn = None
 
 try:
     with psycopg2.connect(
-                host = hostname,
-                dbname = database,
-                user = username,
-                password = pwd,
-                port = port_id) as conn:
+                host = pgsql_credentials.hostname,
+                dbname = pgsql_credentials.database,
+                user = pgsql_credentials.username,
+                password = pgsql_credentials.pwd,
+                port = pgsql_credentials.port_id) as conn:
 
-        # To access the attributes as "column name not a number"
+        
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            # Demo  
-            #insert_script  = "INSERT INTO Publisher (email_address, first_name, last_name, password, balance) VALUES ('test.com', 'test', 'd1', 'shesh', 500)"
-            insert_script  = "INSERT INTO Book (ISBN, name, page_num, price, publisher_percentage, publisher) VALUES (%s, %s, %d, %d, %d, %s) "
-            insert_values = [('1234567890ss123', 'test', 10, 12.5, 0.1, 'test.com')]
-            # for record in insert_values:
-            #     cur.execute(insert_script, record)
-            #cur.execute(insert_script)
-            # update_script = 'UPDATE employee SET salary = salary + (salary * 0.5)'
-            # cur.execute(update_script) 
+            
+            quit = True
+            while(quit):
+                print("Welcome to DaJai BookStore\nEnter Q whenever you wish to quit\nPlease select one of the following options\n1.   Sign In\t2.    Sign Up\t3.    Browse\n")
+                option = input("Enter your selection number here: ")
+                if option == '1':
+                    user_username = input("Username: \n")
+                    user_password = input("Password: \n")
+                    #cur.execute("FROM Users SELECT")
+                if option == 'q' or option == 'Q':
+                    quit = False
 
-            cur.execute('SELECT * FROM Book')
+            
+
+            cur.execute('SELECT * FROM Users')
             for record in cur.fetchall():
-                print(record['ISBN'])
+                print(record)
 except Exception as error:
     print(error)
+
+
 finally:
     if conn is not None:
         conn.close() 
