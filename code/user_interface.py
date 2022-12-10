@@ -2,6 +2,8 @@
 import psycopg2
 import psycopg2.extras      #To access the attributes as "column name not  list index number"
 import pgsql_credentials
+import random
+
 
 # This function creates an insert sql statment
 def insert_script(table_name, values):
@@ -39,14 +41,24 @@ try:
                     user_username = input("Username: \n")
                     user_password = input("Password: \n")
                     #cur.execute("FROM Users SELECT")
+                if option == '2':
+                    user_first_name = input("Please enter your first name: \n")
+                    user_last_name  = input("Please enter your last name: \n")
+                    user_password = input("Please create a password [15 char limit]:  \n")
+                    unique = True
+                    while unique:
+                        user_username = input("Please create a username [15 char limit]:  \n")
+                        for usernames in cur.execute("SELECT username FROM Users;"):
+                            if user_username  == usernames:
+                                unique = False
+                                print("Username is not unqiue, please try again\n")
+
                 if option == 'q' or option == 'Q':
                     quit = False
 
             
 
-            cur.execute('SELECT * FROM Users')
-            for record in cur.fetchall():
-                print(record)
+            
 except Exception as error:
     print(error)
 
