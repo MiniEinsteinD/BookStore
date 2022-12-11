@@ -35,7 +35,7 @@ try:
             
             quit = True
             while(quit):
-                print("Welcome to DaJai BookStore\nEnter Q whenever you wish to quit\nPlease select one of the following options\n1.   Sign In\t2.    Sign Up\t3.    Browse\n")
+                print("Welcome to DaJia BookStore\nEnter Q whenever you wish to quit\nPlease select one of the following options\n1.   Sign In\t2.    Sign Up\t3.    Browse\n")
                 option = input("Enter your selection number here: ")
                 if option == '1':
                     user_username = input("Username: \n")
