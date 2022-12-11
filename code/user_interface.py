@@ -19,6 +19,7 @@ def insert_script(table_name, values):
 
     return script
  
+
 #Create connection with db
 conn = None
 
@@ -32,10 +33,9 @@ try:
 
         
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            
             quit = True
             while(quit):
-                print("Welcome to DaJai BookStore\nEnter Q whenever you wish to quit\nPlease select one of the following options\n1.   Sign In\t2.    Sign Up\t3.    Browse\n")
+                print("Welcome to DaJai BookStore\nEnter Q whenever you wish to quit\nPlease select one of the following options\n1.   Sign In\t2.    Sign Up\n")
                 option = input("Enter your selection number here: ")
                 if option == '1':
                     user_username = input("Username: \n")
@@ -48,10 +48,15 @@ try:
                     unique = True
                     while unique:
                         user_username = input("Please create a username [15 char limit]:  \n")
-                        for usernames in cur.execute("SELECT username FROM Users;"):
+                        cur.execute('SELECT username FROM Users;')
+                        list_of_users = cur.fetchall()
+                        for usernames in list_of_users[len(list_of_users)][0]:
+                            usernames = str(usernames)
+                            print(type(usernames))
                             if user_username  == usernames:
                                 unique = False
                                 print("Username is not unqiue, please try again\n")
+                        unique = False
 
                 if option == 'q' or option == 'Q':
                     quit = False
