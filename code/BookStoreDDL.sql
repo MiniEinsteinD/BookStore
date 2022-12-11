@@ -70,7 +70,7 @@ create table IF NOT EXISTS Collection
     (
     owner           varchar(15)      NOT NULL,
     ISBN            varchar(13)      NOT NULL,
-    collection_name varchar(50)      UNIQUE  NOT NULL, 
+    collection_name varchar(50)      NOT NULL, 
     quantity        INT     NOT NULL,
     primary key (owner, ISBN, collection_name),
     foreign key (owner) references Owner (username),
@@ -94,7 +94,7 @@ create table IF NOT EXISTS Is_Author
     foreign key (ISBN) references Book (ISBN) 
     );
 
-create table IF NOT EXISTS Is_Genre
+create table IF NOT EXISTS In_Genre
     (
     ISBN     varchar(13)     NOT NULL,
     genre    varchar(15)     NOT NULL,
