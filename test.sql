@@ -1,0 +1,1 @@
+"SELECT b.name, b.ISBN FROM Book b WHERE EXISTS (SELECT 1 FROM Collection c WHERE c.owner='" + username "' AND c.ISBN=b.ISBN)"

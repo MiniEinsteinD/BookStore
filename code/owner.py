@@ -1,16 +1,24 @@
-def main():
+# script has the currently signed-in's username saved 
+username = "test"
+
+def ownerscript():
     logged_in = True; 
     while logged_in:
         # ask the owner what they would like to do
-        print("-----MAIN MENU-----")
-        print("Enter 'q' at any time to return to the main menu")
+        print("-----OWNER MAIN MENU-----")
+        print("Enter 'm' at any time to return to the main menu")
         print("\t1. View your collections")
         print("\t2. Generate reports")
         print("\t3. Logout")
         choice = input("Enter the number of your choice: ")
         if choice == "1":
-            print("Here is a list of your currently available collections: ")
-            # list collections from query 
+            # print("Here is a list of your currently available collections: ")
+            # list collections owned by currently signed in owner 
+            print("Here is the list of books currently in your collection: ")
+            query = "SELECT * FROM Collection WHERE owner='" + username + "'"
+            cur.execute(query); 
+            for record in cur.fetchall():
+                print(record)
             collection = input("Please select a collection: ")
             if collection != 'q':
                 print("What would you like to do?")
@@ -48,7 +56,7 @@ def main():
                         else:
                             #remove book
                             print("Book removed from collection")
-                    if collection_choice == "q":
+                    if collection_choice == "m":
                         choice_ok = True
                         print("Returning to main menu...") 
                     else:
@@ -68,7 +76,46 @@ def main():
         print("You are now logged out")
         logged_in = False; 
                 
+# Author: JiaQi Han
+import psycopg2
+import psycopg2.extras      #To access the attributes as "column name not  list index number"
+import pgsql_credentials
+import random
 
 
-if __name__ == '__main__':
-	main()
+# This function creates an insert sql statment
+def insert_script(table_name, values):
+    script = "INSERT INTO " + table_name + " VALUES ("
+
+    count = 0
+    for value in values:
+        if count == len(values)-1:
+            script += "'" + value + "'" + ");" 
+            break
+        script += "'" +  value + "'" + ", "
+        count+=1
+
+    return script
+ 
+#Create connection with db
+conn = None
+
+try:
+    with psycopg2.connect(
+                host = pgsql_credentials.hostname,
+                dbname = pgsql_credentials.database,
+                user = pgsql_credentials.username,
+                password = pgsql_credentials.pwd,
+                port = pgsql_credentials.port_id) as conn:
+
+        
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            ownerscript(); 
+
+except Exception as error:
+    print(error)
+
+
+finally:
+    if conn is not None:
+        conn.close() 

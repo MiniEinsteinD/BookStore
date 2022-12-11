@@ -76,8 +76,9 @@ create table IF NOT EXISTS Collecion
     (
     owner   varchar(15)     UNIQUE  NOT NULL,
     ISBN   varchar(13)       UNIQUE  NOT NULL,
+    collection_name varchar(50) NOT NULL, 
     quantity    INT     NOT NULL,
-    primary key (owner, ISBN),
+    primary key (owner, ISBN, collection_name),
     foreign key (owner) references Owner (username),
     foreign key (ISBN) references Book (ISBN) 
     );

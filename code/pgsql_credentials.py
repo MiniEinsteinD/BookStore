@@ -2,6 +2,7 @@
 
 hostname = 'localhost'
 database = 'BookStore'
-username = 'postgres'
-pwd = 'Dano!123'
+username = 'postgres2'
+# pwd = 'Dano!123'
+pwd = 'password123'
 port_id = 5432
