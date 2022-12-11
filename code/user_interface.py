@@ -2,6 +2,7 @@
 import psycopg2
 import psycopg2.extras      #To access the attributes as "column name not  list index number"
 import dani
+import random
 
 
 
@@ -56,7 +57,7 @@ try:
                                 unique = False
                                 break
                         if unique:
-                            cur.execute(insert_script("Users", [user_username, user_first_name, user_last_name, user_password, "300"]))
+                            cur.execute(insert_script("Users", [user_username, user_first_name, user_last_name, user_password, str(random.randint(50, 500)) ]))
                             check = False
 
                 if option == 'q' or option == 'Q':
