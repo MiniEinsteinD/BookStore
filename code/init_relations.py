@@ -127,20 +127,20 @@ try:
                 lname = "authorl" + str(x) 
                 cur.execute(insert_script("Is_Author", [isbn, fname, lname]))
             #----------------------------------------------------------------------------------------------------------------------
-            #create is_genre
+            #create in_genre
             for x in range(1, 31):
                 isbn = str(1234567890000 + x)
                 genre = "genre" + str(x%5+1) 
-                cur.execute(insert_script("Is_Genre", [isbn, genre])) 
+                cur.execute(insert_script("In_Genre", [isbn, genre])) 
                 if (x%5 == 0):
-                    cur.execute(insert_script("Is_Genre", [isbn, "genre6"])) 
+                    cur.execute(insert_script("In_Genre", [isbn, "genre6"])) 
             #----------------------------------------------------------------------------------------------------------------------
             #create lives_at 
             cur.execute(insert_script("Lives_At", ["user1", "K2OW0P"]))
             cur.execute(insert_script("Lives_At", ["user2", "K2OW0P"]))
             cur.execute(insert_script("Lives_At", ["user3", "K2OZ0P"]))
             #----------------------------------------------------------------------------------------------------------------------
-            #create works at
+            #create works_at
             cur.execute(insert_script("Works_At", ["publ1@test.ca", "K2OZ0D"]))
             cur.execute(insert_script("Works_At", ["publ2@test.ca", "K2OZ0D"]))
             cur.execute(insert_script("Works_At", ["publ3@test.ca", "K2Y6Y5"]))
