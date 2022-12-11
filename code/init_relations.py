@@ -93,12 +93,12 @@ try:
             for x in range (1, 31, 3): 
                 isbn = str(1234567890000 + x)
                 quantity = str(random.randint(1, 20))
-                cur.execute(insert_script("Collection", ["owner2", isbn, "collection1", quantity])) 
+                cur.execute(insert_script("Collection", ["owner2", isbn, "collection2", quantity])) 
             
             for x in range (3, 31, 3): 
                 isbn = str(1234567890000 + x)
                 quantity = str(random.randint(1, 20))
-                cur.execute(insert_script("Collection", ["owner2", isbn, "collection2", quantity])) 
+                cur.execute(insert_script("Collection", ["owner2", isbn, "collection3", quantity])) 
             #----------------------------------------------------------------------------------------------------------------------
             #create phone
             cur.execute(insert_script("Phone", ["publ1@test.ca", "1234567890"]))
