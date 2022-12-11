@@ -1,7 +1,7 @@
 import random 
 
 # script has the currently signed-in's username saved 
-username = "test"
+username = "owner2"
 
 def ownerscript():
     logged_in = True; 
