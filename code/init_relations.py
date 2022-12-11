@@ -58,6 +58,7 @@ try:
                 price = str(random.randint(20, 50))
                 pub_percent = str(round(random.random(), 2))
                 cur.execute(insert_script("Book", [isbn, book_name, page_num, price, pub_percent, "publ1@test.ca"]))
+
             for x in range (11, 21):
                 isbn = str(1234567890000 + x)
                 book_name = "book" + str(x)
@@ -65,6 +66,7 @@ try:
                 price = str(random.randint(20, 50))
                 pub_percent = str(round(random.random(), 2))
                 cur.execute(insert_script("Book", [isbn, book_name, page_num, price, pub_percent, "publ2@test.ca"]))
+
             for x in range (21, 31):
                 isbn = str(1234567890000 + x)
                 book_name = "book" + str(x)
@@ -83,19 +85,39 @@ try:
 
             #----------------------------------------------------------------------------------------------------------------------
             # create collections
-
+            for x in range (1, 31):
+                isbn = str(1234567890000 + x)
+                quantity = str(random.randint(1, 20))
+                cur.execute(insert_script("Collection", ["owner1", isbn, "collection1", quantity])) 
+            
+            for x in range (1, 31, 3): 
+                isbn = str(1234567890000 + x)
+                quantity = str(random.randint(1, 20))
+                cur.execute(insert_script("Collection", ["owner2", isbn, "collection1", quantity])) 
+            
+            for x in range (3, 31, 3): 
+                isbn = str(1234567890000 + x)
+                quantity = str(random.randint(1, 20))
+                cur.execute(insert_script("Collection", ["owner2", isbn, "collection2", quantity])) 
+            #----------------------------------------------------------------------------------------------------------------------
             #create phone for publisher
-
+            
+            #----------------------------------------------------------------------------------------------------------------------
             #create is_author
 
+            #----------------------------------------------------------------------------------------------------------------------
             #create is_genre
-
+            
+            #----------------------------------------------------------------------------------------------------------------------
             #create in_order
 
+            #----------------------------------------------------------------------------------------------------------------------
             #create lives_at 
-
+            
+            #----------------------------------------------------------------------------------------------------------------------
             #create works at
 
+            #----------------------------------------------------------------------------------------------------------------------
             #create user_banking
 
             cur.execute('SELECT * FROM book')
