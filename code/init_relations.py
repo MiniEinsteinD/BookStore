@@ -100,29 +100,54 @@ try:
                 quantity = str(random.randint(1, 20))
                 cur.execute(insert_script("Collection", ["owner2", isbn, "collection2", quantity])) 
             #----------------------------------------------------------------------------------------------------------------------
-            #create phone for publisher
-            
+            #create phone
+            cur.execute(insert_script("Phone", ["publ1@test.ca", "1234567890"]))
+            cur.execute(insert_script("Phone", ["publ1@test.ca", "1234567891"]))
+            cur.execute(insert_script("Phone", ["publ2@test.ca", "1234567892"]))
+            cur.execute(insert_script("Phone", ["publ3@test.ca", "1234567893"]))
             #----------------------------------------------------------------------------------------------------------------------
             #create is_author
+            # add one initial author for every book 
+            for x in range (1, 31):
+                isbn = str(1234567890000 + x)
+                fname = "authorf" + str(x) 
+                lname = "authorl" + str(x) 
+                cur.execute(insert_script("Is_Author", [isbn, fname, lname])) 
 
+            for x in range (1, 6):
+                # add a second author to last 5 books 
+                isbn = str(1234567890000 + x)
+                fname = "authorf" + str(x+25) 
+                lname = "authorl" + str(x+25) 
+                cur.execute(insert_script("Is_Author", [isbn, fname, lname]))
+
+                # first 5 initial authors are also the author to the next 5 books 
+                isbn = str(1234567890005 + x)
+                fname = "authorf" + str(x) 
+                lname = "authorl" + str(x) 
+                cur.execute(insert_script("Is_Author", [isbn, fname, lname]))
             #----------------------------------------------------------------------------------------------------------------------
             #create is_genre
-            
-            #----------------------------------------------------------------------------------------------------------------------
-            #create in_order
-
+            for x in range(1, 31):
+                isbn = str(1234567890000 + x)
+                genre = "genre" + str(x%5+1) 
+                cur.execute(insert_script("Is_Genre", [isbn, genre])) 
+                if (x%5 == 0):
+                    cur.execute(insert_script("Is_Genre", [isbn, "genre6"])) 
             #----------------------------------------------------------------------------------------------------------------------
             #create lives_at 
-            
+            cur.execute(insert_script("Lives_At", ["user1", "K2OW0P"]))
+            cur.execute(insert_script("Lives_At", ["user2", "K2OW0P"]))
+            cur.execute(insert_script("Lives_At", ["user3", "K2OZ0P"]))
             #----------------------------------------------------------------------------------------------------------------------
             #create works at
+            cur.execute(insert_script("Works_At", ["publ1@test.ca", "K2OZ0D"]))
+            cur.execute(insert_script("Works_At", ["publ2@test.ca", "K2OZ0D"]))
+            cur.execute(insert_script("Works_At", ["publ3@test.ca", "K2Y6Y5"]))
 
-            #----------------------------------------------------------------------------------------------------------------------
-            #create user_banking
-
-            cur.execute('SELECT * FROM book')
-            for record in cur.fetchall():
-                print(record)
+            # cur.execute('SELECT * FROM book')
+            # for record in cur.fetchall():
+            #     print(record)
 except Exception as error:
     print(error)
 finally:
