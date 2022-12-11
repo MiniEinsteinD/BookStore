@@ -55,14 +55,14 @@ create table IF NOT EXISTS Orders
     (
     username        varchar(15)     NOT NULL,
     postal_code     varchar(6)      NOT NULL,
-    order_num       varchar(15)     NOT NULL, 
+    order_num       varchar(15)     NOT NULL UNIQUE, 
     traking_info    varchar(50)     NOT NULL,
     order_date      DATE            NOT NULL,
     total_price     DECIMAL         NOT NULL,
     from_owner      varchar(15)     NOT NULL,
     primary key (username, postal_code, order_num),
     foreign key (username) references Users (username),
-    foreign key (postal_code) references Address (postal_code) 
+    foreign key (postal_code) references Address (postal_code), 
     foreign key (from_owner) references Owner(username) 
     );
 

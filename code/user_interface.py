@@ -1,8 +1,8 @@
 # Author: Daniah Mohammed
 import psycopg2
 import psycopg2.extras      #To access the attributes as "column name not  list index number"
-import pgsql_credentials
-import random
+import dani
+
 
 
 # This function creates an insert sql statment
@@ -25,11 +25,11 @@ conn = None
 
 try:
     with psycopg2.connect(
-                host = pgsql_credentials.hostname,
-                dbname = pgsql_credentials.database,
-                user = pgsql_credentials.username,
-                password = pgsql_credentials.pwd,
-                port = pgsql_credentials.port_id) as conn:
+                host = dani.hostname,
+                dbname = dani.database,
+                user = dani.username,
+                password = dani.pwd,
+                port = dani.port_id) as conn:
 
         
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -50,14 +50,12 @@ try:
                         user_username = input("Please create a username [15 char limit]:  \n")
                         cur.execute('SELECT username FROM Users;')
                         list_of_users = cur.fetchall()
-                        for usernames in list_of_users[len(list_of_users)][0]:
-                            usernames = str(usernames)
-                            print(type(usernames))
-                            if user_username  == usernames:
-                                unique = False
+                        for usernames in list_of_users:
+                            if user_username  == usernames[0]:
                                 print("Username is not unqiue, please try again\n")
-                        unique = False
-
+                                quit
+                            else:
+                                unique = False  
                 if option == 'q' or option == 'Q':
                     quit = False
 
