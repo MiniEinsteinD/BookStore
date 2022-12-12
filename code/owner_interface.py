@@ -1,6 +1,5 @@
+# Author: Daniah Mohammed and JiaQi Han 
 import random 
-
-# script has the currently signed-in's username saved 
 
 def ownerscript(username):
     logged_in = True; 
@@ -59,7 +58,7 @@ def ownerscript(username):
                                     quantity = input("How many copies would you like to stock? ")
                                     add_book = "INSERT INTO Collection Values ('" + username + "','" + book + "','" + collection + "','" + quantity + "');" 
                                     cur.execute(add_book)
-                                    print("successfully added " + book_values[1] + "to Collection") 
+                                    print("successfully added " + book_values[1] + " to Collection") 
                                     choice_ok = True
                         if collection_choice == "2": 
                             print("Here is the list of books that are currently in your collection: ")
@@ -83,7 +82,7 @@ def ownerscript(username):
                                 else:
                                     delete_book = "DELETE FROM Collection WHERE ISBN='" + book + "' AND owner='" + username + "' AND collection_name='" + collection + "'"  
                                     cur.execute(delete_book)
-                                    print("successfully added " + book_values[1] + "to Collection") 
+                                    print("successfully removed " + book_values[1] + " to Collection") 
                                     choice_ok = True
                         else:
                             print("Please enter a valid selection")
