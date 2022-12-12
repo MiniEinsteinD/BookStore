@@ -3,6 +3,7 @@ import psycopg2
 import psycopg2.extras      #To access the attributes as "column name not  list index number"
 import pgsql_credentials
 import random
+from datetime import date 
 
 
 
@@ -35,20 +36,24 @@ try:
 
 
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            cart = []
-            order_num = 1000  
+            order_num = 1000
+            cart = []  
                  
-            def place_order(owner, collection, cart): 
+            def place_order(username, owner, collection, order_num, cart): 
                 total_price = 0; 
                 for book in cart:
                     cur.execute("SELECT b.price FROM Book b WHERE b.isbn='" + book[0] + "' AND EXISTS (SELECT 1 FROM Collection c WHERE c.owner='" + owner + "' AND c.collection_name='" + collection + "' AND c.ISBN=b.ISBN)")
                     price = cur.fetchall()
-                    total_price += price[0][0] 
-
+                    total_price += int(price[0][0])*int(book[1]) 
+                cur.execute("SELECT a.postal_code FROM Address a WHERE EXISTS (SELECT 1 FROM Lives_At l WHERE l.resident='" + username + "' AND l.postal_code=a.postal_code)")
+                postal_code = cur.fetchall() 
+                cur.execute("INSERT INTO Orders VALUES ('" + username + "','" + postal_code[0][0] + "','" + str(order_num) + "', 'order received','" +  str(date.today()) + "','" + str(total_price) + "','" + owner + "');")
+                cur.execute("INSERT INTO In_Order VALUES ('" + str(order_num) + "','" + book[0] + "','" + book[1] + "');")
+                order_num += 1     
                 cart = [] 
                 return 
 
-            def view_app(loggedin):
+            def view_app(loggedin, username):
                 while loggedin:
                     seller = choose_seller()
                     collection = choose_collection(seller)
@@ -70,7 +75,7 @@ try:
                                 print(cart) 
                                 buy = input("Purchase books? (y/n) ")
                                 if buy == "y":
-                                    place_order(seller, collection, cart) 
+                                    place_order(username, seller, collection, order_num, cart) 
                         else:
                             print("Please select a valid option")
                     check = input("Continue shopping? (y/n): ")
@@ -262,7 +267,7 @@ try:
                         loggedin = True
                     else:
                         print("INVALID username or password, please try again\n") 
-                view_app(loggedin)  
+                view_app(loggedin, user_username)  
                 print("Goodbye! ")
 
             if option == '2':
@@ -292,7 +297,7 @@ try:
                         cur.execute(insert_script("Users", [user_username, user_first_name, user_last_name, user_password, str(random.randint(50, 500)) ]))
                         cur.execute(insert_script("Lives_At", [user_username, post_code]))
                         loggedin = True
-                view_app(loggedin) 
+                view_app(loggedin, user_username) 
                 print("Goodbye!")
 
 
