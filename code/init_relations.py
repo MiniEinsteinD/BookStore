@@ -1,7 +1,7 @@
 # Author: Daniah Mohammed and JiaQi Han 
 import psycopg2
 import psycopg2.extras      #To access the attributes as "column name not  list index number"
-import dani
+import pgsql_credentials
 import random 
 
 
@@ -16,7 +16,6 @@ def insert_script(table_name, values):
             break
         script += "'" +  value + "'" + ", "
         count+=1
-
     return script
 
 
@@ -25,11 +24,11 @@ conn = None
 
 try:
     with psycopg2.connect(
-                host = dani.hostname,
-                dbname = dani.database,
-                user = dani.username,
-                password = dani.pwd,
-                port = dani.port_id) as conn:
+                host = pgsql_credentials.hostname,
+                dbname = pgsql_credentials.database,
+                user = pgsql_credentials.username,
+                password = pgsql_credentials.pwd,
+                port = pgsql_credentials.port_id) as conn:
 
         
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -145,18 +144,9 @@ try:
             cur.execute(insert_script("Works_At", ["publ2@test.ca", "K2OZ0D"]))
             cur.execute(insert_script("Works_At", ["publ3@test.ca", "K2Y6Y5"]))
 
-            # cur.execute('SELECT * FROM book')
-            # for record in cur.fetchall():
-            #     print(record)
+
 except Exception as error:
     print(error)
 finally:
     if conn is not None:
         conn.close() 
-
-
-'''insert_script2  = "INSERT INTO Book (ISBN, name, page_num, price, publisher_percentage, publisher) VALUES (%s, %s, %d, %d, %d, %s) "
-            insert_values = [('1234567890ss123', 'test', 10, 12.5, 0.1, 'test.com')]
-            for record in insert_values:
-                 cur.execute(insert_script, record)
-            #'''
