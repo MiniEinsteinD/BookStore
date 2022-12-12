@@ -1,7 +1,7 @@
-# Author: Daniah Mohammed
+# Author: Daniah Mohammed and JiaQi Han
 import psycopg2
 import psycopg2.extras      #To access the attributes as "column name not  list index number"
-import dani
+import pgsql_credentials
 import random
 
 
@@ -26,11 +26,11 @@ conn = None
 
 try:
     with psycopg2.connect(
-                host = dani.hostname,
-                dbname = dani.database,
-                user = dani.username,
-                password = dani.pwd,
-                port = dani.port_id) as conn:
+                host = pgsql_credentials.hostname,
+                dbname = pgsql_credentials.database,
+                user = pgsql_credentials.username,
+                password = pgsql_credentials.pwd,
+                port = pgsql_credentials.port_id) as conn:
 
 
 
@@ -41,9 +41,9 @@ try:
             def place_order(owner, collection, cart): 
                 total_price = 0; 
                 for book in cart:
-                    cur.execute("SELECT b.price FROM Book b WHERE b.ISBN='" + book[0] + "EXISTS (SELECT 1 FROM Collection c WHERE c.owner='" + owner + "' AND c.collection_name='" + collection + "' AND c.ISBN=b.ISBN);")
-                    price = cur.fetchall
-                    print(price[0][0])
+                    cur.execute("SELECT b.price FROM Book b WHERE b.isbn='" + book[0] + "' AND EXISTS (SELECT 1 FROM Collection c WHERE c.owner='" + owner + "' AND c.collection_name='" + collection + "' AND c.ISBN=b.ISBN)")
+                    price = cur.fetchall()
+                    total_price += price[0][0] 
 
                 cart = [] 
                 return 
@@ -280,7 +280,17 @@ try:
                             unique = False
                             break
                     if unique:
+                        post_code = input("\nPlease enter the postal code [6 chars only]:")
+                        uni_num = input("\nPlease enter the unit number of the house/appartment: ")
+                        street_name = input("\nPlease enter street name:")
+                        city = input("\nPlease enter the city: ")
+                        prov = input("\nPlease enter prvoince: ")
+                        country = input("\nPlease enter country: ")
+
+                        cur.execute(insert_script("Address", [post_code, uni_num, street_name, city, prov, city]))
+                        cur.execute(insert_script(""))
                         cur.execute(insert_script("Users", [user_username, user_first_name, user_last_name, user_password, str(random.randint(50, 500)) ]))
+                        cur.execute(insert_script("Lives_At", [user_username, post_code]))
                         loggedin = True
                 view_app(loggedin) 
                 print("Goodbye!")
