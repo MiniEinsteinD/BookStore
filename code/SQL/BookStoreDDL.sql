@@ -57,7 +57,7 @@ create table IF NOT EXISTS Orders
     postal_code     varchar(6)      NOT NULL,
     order_num       varchar(15)     UNIQUE  NOT NULL, 
     traking_info    varchar(50)     NOT NULL,
-    order_date      DATE            NOT NULL,
+    order_date      varchar(30)     NOT NULL,
     total_price     DECIMAL         NOT NULL,
     from_owner      varchar(15)     NOT NULL,
     primary key (username, postal_code, order_num),
