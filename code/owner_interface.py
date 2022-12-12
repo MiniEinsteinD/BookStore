@@ -138,7 +138,18 @@ try:
 
         
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            ownerscript("owner2"); 
+            run = True
+            while run:
+                user_username = input("Username: \n")
+                user_password = input("Password: \n")
+                cur.execute("SELECT username, password FROM Owner WHERE username = '" + user_username + "' AND password = '" + user_password + "';")
+                creds = cur.fetchall()
+                if  len(creds) == 0:
+                    print("INVALID username or password, please try again\n")
+                elif creds[0][0]  == user_username and creds[0][1] == user_password:
+                    ownerscript(user_username)
+                else:
+                    print("INVALID username or password, please try again\n")  
 
 except Exception as error:
     print(error)
