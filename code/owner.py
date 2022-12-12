@@ -1,14 +1,12 @@
 import random 
 
 # script has the currently signed-in's username saved 
-username = "test"
 
-def ownerscript():
+def ownerscript(username):
     logged_in = True; 
     while logged_in:
         # ask the owner what they would like to do
         print("-----OWNER MAIN MENU-----")
-        print("Enter 'm' at any time to return to the main menu")
         print("\t1. View your collections")
         print("\t2. Generate reports")
         print("\t3. Logout")
@@ -17,66 +15,94 @@ def ownerscript():
             print("Here is a list of your currently available collections: ")
             # list collections owned by currently signed in owner 
             query = "SELECT DISTINCT collection_name FROM Collection WHERE owner='" + username + "'"
-            cur.execute(query); 
+            cur.execute(query) 
             for record in cur.fetchall():
-                print(record)
-            # collection = input("Please select a collection: ")
-            # if collection != 'q':
-            #     print("What would you like to do?")
-            #     print("\t1. Add a book to this collection")
-            #     print("\t2. Remove an exisiting book from this collection")
-            #     collection_choice = input("Enter the number of your choice: ")
-            #     choice_ok = False; 
-            #     while not choice_ok: 
-            #         if collection_choice == "1": 
-            #             # could also change to book title and show all results that match (for different editions of same book)
-            #             ISBN = input("Please enter the ISBN of the book to add") 
-            #             # find book in relation using query 
-            #             # add book to collection using query 
-            #             found = False #change it to actually find book in database 
-            #             if not found: 
-            #                 # add book
-            #                 print("Book added") 
-            #                 choice_ok = True 
-            #             else:
-            #                 add_book = input("This ISBN is not currently in the database. Would you like to add the information for the book? (Y/N)")
-            #                 if add_book == "Y": 
-            #                     choice_ok = True 
-            #                     # collect book info and query to add book
-            #                     print("Book information collected")
-            #                 if add_book == "N": 
-            #                     choice_ok = True 
-            #                     print("Returning to collection selection...")
-            #         if collection_choice == "2": 
-            #             choice_ok = True; 
-            #             ISBN = input("Please enter the ISBN of the book from this collection to remove") 
-            #             # find book in collection and remove using query 
-            #             found = False 
-            #             if not found:
-            #                 print("This book is not currently in this collection and can therefore not be removed")
-            #             else:
-            #                 #remove book
-            #                 print("Book removed from collection")
-            #         if collection_choice == "m":
-            #             choice_ok = True
-            #             print("Returning to main menu...") 
-            #         else:
-            #             print("Please select a valid choice")
-    if choice == "2": 
-        print("These are the types of reports available: ")
-        # print("1. Total sales vs. expenditures")
-        # # some other choices 
-        # report_choice = input("Enter the number of your choice: ")
-        # while not choice_ok: 
-        #     if report_choice == "1":
-        #         choice_ok = True; 
-        #         # query to get report and print
-        #     else:
-        #         print("Please select a valid choice")
-    if choice == "3":
-        print("You are now logged out")
-        logged_in = False; 
-        username = "null"
+                print(record[0])
+            count_collect = 0
+            while count_collect == 0:
+                count_collect = 0 
+                collection = input("Please enter the name of the collection you are selecting: ")
+                # check collection name is valid 
+                find_collection = "SELECT DISTINCT * FROM Collection WHERE owner='" + username + "' AND collection_name='" + collection + "'"
+                cur.execute(find_collection) 
+                for collect in cur.fetchall():
+                    count_collect += 1
+                if count_collect == 0:
+                    print("Please enter a valid collection name")
+                else:
+                    print("What would you like to do?")
+                    print("\t1. Add a book to this collection")
+                    print("\t2. Remove an exisiting book from this collection")
+                    collection_choice = input("Enter the number of your choice: ")
+                    choice_ok = False; 
+                    while not choice_ok: 
+                        if collection_choice == "1": 
+                            print("Here is the list of books that are currently not in your collection: ")
+                            find_books = "SELECT b.name, b.ISBN FROM Book b WHERE NOT EXISTS (SELECT 1 FROM Collection c WHERE c.owner='" + username + "' AND collection_name='" + collection + "' AND c.ISBN=b.ISBN)"
+                            cur.execute(find_books)
+                            for book in cur.fetchall():
+                                print("Name: " + book[0] + " ISBN: " + book[1])
+                            count_book = 0
+                            while count_book == 0:
+                                count_book = 0
+                                book = input("Enter the ISBN of the book you wish to add to your collection: ")
+                                #check that book selection is valid 
+                                find_book = "SELECT * FROM Book WHERE ISBN='" + book + "'" 
+                                cur.execute(find_book) 
+                                book_values = []
+                                for x in cur.fetchall():
+                                    book_values = x
+                                    count_book += 1 
+                                if count_book == 0:
+                                    print("Please enter a valid ISBN")
+                                else:
+                                    quantity = input("How many copies would you like to stock? ")
+                                    add_book = "INSERT INTO Collection Values ('" + username + "','" + book + "','" + collection + "','" + quantity + "');" 
+                                    cur.execute(add_book)
+                                    print("successfully added " + book_values[1] + "to Collection") 
+                                    choice_ok = True
+                        if collection_choice == "2": 
+                            print("Here is the list of books that are currently in your collection: ")
+                            find_books = "SELECT b.name, b.ISBN FROM Book b WHERE EXISTS (SELECT 1 FROM Collection c WHERE c.owner='" + username + "' AND c.collection_name='" + collection + "' AND c.ISBN=b.ISBN)"
+                            cur.execute(find_books)
+                            for book in cur.fetchall():
+                                print("Name: " + book[0] + " ISBN: " + book[1])
+                            count_book = 0
+                            while count_book == 0:
+                                count_book = 0
+                                book = input("Enter the ISBN of the book you wish to remove from your collection: ")
+                                #check that book selection is valid 
+                                find_book = "SELECT * FROM Collection WHERE ISBN='" + book + "' AND owner='" + username + "' AND collection_name='" + collection + "'" 
+                                cur.execute(find_book) 
+                                book_values = []
+                                for x in cur.fetchall():
+                                    book_values = x
+                                    count_book += 1 
+                                if count_book == 0:
+                                    print("Please enter a valid ISBN")
+                                else:
+                                    delete_book = "DELETE FROM Collection WHERE ISBN='" + book + "' AND owner='" + username + "' AND collection_name='" + collection + "'"  
+                                    cur.execute(delete_book)
+                                    print("successfully added " + book_values[1] + "to Collection") 
+                                    choice_ok = True
+                        else:
+                            print("Please enter a valid selection")
+        if choice == "2": 
+            print("These are the types of reports available: ")
+            print("1. Total sales vs. expenditures")
+            print("2. Sales by Genre")
+            print("3. Sales by Author") 
+            report_choice = input("Enter the number of your choice: ")
+            # while not choice_ok: 
+            #     if report_choice == "1":
+            #         choice_ok = True; 
+            #         # query to get report and print
+            #     else:
+            #         print("Please select a valid choice")
+        if choice == "3":
+            print("You are now logged out")
+            logged_in = False; 
+            username = "null"
                 
 # Author: JiaQi Han
 import psycopg2
@@ -112,7 +138,7 @@ try:
 
         
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            ownerscript(); 
+            ownerscript("owner2"); 
 
 except Exception as error:
     print(error)
