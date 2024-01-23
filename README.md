@@ -1,24 +1,34 @@
 # BookStore
-COMP 3005 class project
 
-We chose to use Python & psycopg2 module in order to create our BookStore Application. It is a command-line application that consists of 2 different main scripts: 
-        User_Interface
-        Owner_Interface
+## COMP 3005 Class Project
 
-Each script is responsible for the functionality of the BookStore App. The database changes according to both scripts. 
+Welcome to the BookStore application, a project developed for the COMP 3005 class. This command-line application is built using Python and the psycopg2 module. The application consists of two main scripts:
 
-First, create the db in pgAdmin with the name of 'BookStore'.
-In order to run the script, you need to download the BookStore>code file. 
-Please go to 'pgsql_credentials.py' and change the credentials required in order to build the connection with the db sql server.
-After, please go to 'init_reltions.py' and run the script to populate the db with dummy values.
-Finally, run the desired scrpit (user_interface or owner_interface) and follow the command-line instructions.
+1. **User_Interface**
+2. **Owner_Interface**
 
-A demo of what the user/owner interface is added to the documantation. Please take a look at it for further help.
+Each script is responsible for specific functionalities within the BookStore application, and the database undergoes changes based on the actions performed by these scripts.
 
-Note: You can not create an owner, so please look at the init_relations to find an owner username and password or run the tables in pgadmin to get the username and password of one of the owners.
+## Getting Started
 
+To set up and run the BookStore application, follow these steps:
 
-Authors:
-JiaQi Han (101140762)
-Daniah Mohammed (101145902)
+1. **Create Database:** In pgAdmin, create a database named 'BookStore'.
+2. **Download Code:** Download the 'BookStore' code file.
+3. **Configure Database Connection:** Open 'pgsql_credentials.py' and update the credentials to establish a connection with the SQL server.
+4. **Initialize Database:** Run 'init_relations.py' to populate the database with dummy values.
+5. **Run Application:** Execute the desired script (`user_interface` or `owner_interface`) and follow the command-line instructions.
+
+## Demo
+
+Refer to the documentation for a detailed demo of the user and owner interfaces to assist you further in using the BookStore application.
+
+## Note
+
+- **Owner Credentials:** You cannot create an owner directly. Refer to 'init_relations.py' to find an existing owner's username and password. Alternatively, check the pgAdmin tables to retrieve the username and password of one of the owners.
+
+## Authors
+
+- **JiaQi Han (101140762)**
+- **Daniah Mohammed (101145902)**
 
