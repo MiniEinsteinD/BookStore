@@ -1,7 +1,5 @@
 # BookStore
 
-## COMP 3005 Class Project
-
 Welcome to the BookStore application, a project developed for the COMP 3005 class. This command-line application is built using Python and the psycopg2 module. The application consists of two main scripts:
 
 1. **User_Interface**
